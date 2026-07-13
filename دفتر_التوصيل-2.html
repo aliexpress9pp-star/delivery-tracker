@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<title>دفتر التوصيل</title>
+<meta name="theme-color" content="#143C2D">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="دفتر التوصيل">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23143C2D'/%3E%3Ctext x='50' y='68' font-size='55' text-anchor='middle'%3E%F0%9F%9B%B5%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%23143C2D'/%3E%3Ctext x='50' y='68' font-size='55' text-anchor='middle'%3E%F0%9F%9B%B5%3C/text%3E%3C/svg%3E">
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22%D8%AF%D9%81%D8%AA%D8%B1%20%D8%A7%D9%84%D8%AA%D9%88%D8%B5%D9%8A%D9%84%22%2C%22short_name%22%3A%22%D8%AF%D9%81%D8%AA%D8%B1%20%D8%A7%D9%84%D8%AA%D9%88%D8%B5%D9%8A%D9%84%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23F3EFE6%22%2C%22theme_color%22%3A%22%23143C2D%22%7D">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #F3EFE6;
+    --card: #FFFFFF;
+    --ink: #1E2A24;
+    --ink-soft: #5B6960;
+    --green: #1F5A44;
+    --green-deep: #143C2D;
+    --gold: #C99A3A;
+    --red: #A8462F;
+    --line: #E3DCC9;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    font-family:'Tajawal', sans-serif;
+    color:var(--ink);
+    min-height:100vh;
+    padding-bottom:40px;
+  }
+  header{
+    background:var(--green-deep);
+    color:#F3EFE6;
+    padding:22px 18px 26px;
+    border-radius:0 0 22px 22px;
+    position:relative;
+    overflow:hidden;
+  }
+  header::after{
+    content:"";
+    position:absolute;
+    left:-30px; top:-40px;
+    width:140px; height:140px;
+    background:var(--gold);
+    opacity:.15;
+    border-radius:50%;
+  }
+  header h1{
+    font-family:'Cairo', sans-serif;
+    font-weight:900;
+    font-size:22px;
+    margin:0 0 4px;
+    position:relative;
+  }
+  header p{
+    margin:0;
+    font-size:13px;
+    color:#C9D6CC;
+    position:relative;
+  }
+
+  .summary{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin:16px 16px 0;
+  }
+  .summary .full{grid-column:1/3;}
+  .stat{
+    background:var(--card);
+    border-radius:16px;
+    padding:14px 16px;
+    box-shadow:0 2px 8px rgba(20,60,45,.06);
+  }
+  .stat .label{font-size:12px;color:var(--ink-soft);margin-bottom:4px;}
+  .stat .value{font-family:'Cairo',sans-serif;font-weight:800;font-size:22px;}
+  .stat.net .value{color:var(--green);}
+  .stat.save .value{color:var(--gold);}
+
+  section.panel{
+    background:var(--card);
+    margin:18px 16px 0;
+    border-radius:18px;
+    padding:18px;
+    box-shadow:0 2px 10px rgba(20,60,45,.07);
+  }
+  section.panel h2{
+    font-family:'Cairo',sans-serif;
+    font-size:16px;
+    margin:0 0 14px;
+    color:var(--green-deep);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  .field{margin-bottom:14px;}
+  .field label{
+    display:block;
+    font-size:13px;
+    color:var(--ink-soft);
+    margin-bottom:6px;
+  }
+  .field input, .field select{
+    width:100%;
+    padding:14px 14px;
+    border-radius:12px;
+    border:1.5px solid var(--line);
+    font-size:17px;
+    font-family:'Tajawal',sans-serif;
+    background:#FBFAF6;
+    color:var(--ink);
+  }
+  .field input:focus, .field select:focus{
+    outline:none;
+    border-color:var(--green);
+  }
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+  .save-btn{
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:14px;
+    background:var(--green);
+    color:#fff;
+    font-family:'Cairo',sans-serif;
+    font-weight:700;
+    font-size:16px;
+    margin-top:4px;
+  }
+  .save-btn:active{background:var(--green-deep);}
+
+  .pct-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:#F6F1E3;
+    border-radius:12px;
+    padding:10px 14px;
+    margin-bottom:14px;
+  }
+  .pct-row label{font-size:13px;color:var(--ink-soft);flex:1;}
+  .pct-row input{width:70px;padding:8px;border-radius:8px;border:1.5px solid var(--line);text-align:center;font-size:15px;}
+
+  .entries{margin:18px 16px 0;}
+  .entries h2{
+    font-family:'Cairo',sans-serif;
+    font-size:16px;
+    color:var(--green-deep);
+    margin:0 0 10px 4px;
+  }
+  .entry-card{
+    background:var(--card);
+    border-radius:14px;
+    padding:14px 16px;
+    margin-bottom:10px;
+    box-shadow:0 2px 8px rgba(20,60,45,.06);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .entry-card .info .date{font-family:'Cairo',sans-serif;font-weight:700;font-size:14px;}
+  .entry-card .info .meta{font-size:12px;color:var(--ink-soft);margin-top:2px;}
+  .entry-card .amounts{text-align:left;}
+  .entry-card .amounts .net{font-family:'Cairo',sans-serif;font-weight:800;font-size:16px;color:var(--green);}
+  .entry-card .amounts .save{font-size:11px;color:var(--gold);margin-top:2px;}
+  .del-btn{
+    background:none;
+    border:none;
+    color:var(--red);
+    font-size:20px;
+    padding:6px 4px 6px 10px;
+    line-height:1;
+  }
+  .empty{
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:13px;
+    padding:24px 10px;
+  }
+  .note{
+    font-size:12px;
+    color:var(--ink-soft);
+    text-align:center;
+    margin:18px 24px 0;
+    line-height:1.7;
+  }
+  .toast{
+    position:fixed;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%);
+    background:var(--green-deep);
+    color:#fff;
+    padding:10px 22px;
+    border-radius:30px;
+    font-size:13px;
+    opacity:0;
+    transition:opacity .25s;
+    pointer-events:none;
+  }
+  .toast.show{opacity:1;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>دفتر التوصيل 🛵</h1>
+  <p id="todayLabel">تابع دخلك ومصاريفك يوم بيوم</p>
+</header>
+
+<div class="summary">
+  <div class="stat">
+    <div class="label">إجمالي الدخل</div>
+    <div class="value" id="totalIncome">0</div>
+  </div>
+  <div class="stat">
+    <div class="label">إجمالي المصاريف</div>
+    <div class="value" id="totalExpense">0</div>
+  </div>
+  <div class="stat net full">
+    <div class="label">صافي الربح</div>
+    <div class="value" id="totalNet">0 جنيه</div>
+  </div>
+  <div class="stat save full">
+    <div class="label">التوفير المقترح</div>
+    <div class="value" id="totalSave">0 جنيه</div>
+  </div>
+</div>
+
+<section class="panel">
+  <h2>➕ إضافة يوم شغل</h2>
+
+  <div class="field">
+    <label>التاريخ</label>
+    <input type="date" id="f_date">
+  </div>
+
+  <div class="field">
+    <label>التطبيق</label>
+    <select id="f_app">
+      <option value="طلبات">طلبات</option>
+      <option value="InstaShop">InstaShop</option>
+      <option value="Breadfast">Breadfast</option>
+      <option value="تطبيق تاني">تطبيق تاني</option>
+    </select>
+  </div>
+
+  <div class="row2">
+    <div class="field">
+      <label>ساعات الشغل</label>
+      <input type="number" inputmode="decimal" id="f_hours" placeholder="مثال: 8">
+    </div>
+    <div class="field">
+      <label>عدد الطلبات</label>
+      <input type="number" inputmode="numeric" id="f_orders" placeholder="مثال: 14">
+    </div>
+  </div>
+
+  <div class="field">
+    <label>إجمالي الدخل (جنيه)</label>
+    <input type="number" inputmode="decimal" id="f_income" placeholder="مثال: 550">
+  </div>
+
+  <div class="row2">
+    <div class="field">
+      <label>بنزين</label>
+      <input type="number" inputmode="decimal" id="f_fuel" placeholder="0">
+    </div>
+    <div class="field">
+      <label>صيانة/كاوتش</label>
+      <input type="number" inputmode="decimal" id="f_maint" placeholder="0">
+    </div>
+  </div>
+
+  <div class="row2">
+    <div class="field">
+      <label>شحن موبايل/نت</label>
+      <input type="number" inputmode="decimal" id="f_phone" placeholder="0">
+    </div>
+    <div class="field">
+      <label>مصاريف تانية</label>
+      <input type="number" inputmode="decimal" id="f_other" placeholder="0">
+    </div>
+  </div>
+
+  <div class="pct-row">
+    <label>نسبة التوفير من صافي الربح</label>
+    <input type="number" inputmode="numeric" id="f_pct" value="10">
+    <span>%</span>
+  </div>
+
+  <button class="save-btn" id="saveBtn">حفظ اليوم ده</button>
+</section>
+
+<div class="entries">
+  <h2>سجل الأيام</h2>
+  <div id="entriesList"></div>
+</div>
+
+<p class="note">كل الأرقام بتتحفظ على جهازك تلقائي. اضغط على أي رقم عشان تكتب فيه — الكيبورد المفروض يطلع رقمي مباشرة.</p>
+
+<div class="toast" id="toast">تم الحفظ</div>
+
+<script>
+const STORAGE_KEY_PREFIX = 'entry:';
+const LOCAL_KEY = 'delivery_tracker_entries';
+let entries = [];
+
+const hasClaudeStorage = (typeof window.storage !== 'undefined' && window.storage !== null);
+
+function todayStr(){
+  const d = new Date();
+  return d.toISOString().slice(0,10);
+}
+
+document.getElementById('f_date').value = todayStr();
+
+function fmt(n){
+  return Number(n||0).toLocaleString('en-US', {maximumFractionDigits:0});
+}
+
+function loadLocal(){
+  try{
+    const raw = localStorage.getItem(LOCAL_KEY);
+    return raw ? JSON.parse(raw) : [];
+  }catch(e){ return []; }
+}
+
+function saveLocal(list){
+  try{ localStorage.setItem(LOCAL_KEY, JSON.stringify(list)); }catch(e){}
+}
+
+async function loadEntries(){
+  if(hasClaudeStorage){
+    try{
+      const list = await window.storage.list('entry:', false);
+      if(!list || !list.keys || list.keys.length===0){ entries = []; render(); return; }
+      const results = await Promise.all(list.keys.map(k => window.storage.get(k, false).catch(()=>null)));
+      entries = results.filter(r=>r).map(r => JSON.parse(r.value));
+      entries.sort((a,b)=> b.date.localeCompare(a.date));
+    }catch(e){
+      entries = [];
+    }
+  } else {
+    entries = loadLocal();
+    entries.sort((a,b)=> b.date.localeCompare(a.date));
+  }
+  render();
+}
+
+async function saveEntry(entry){
+  if(hasClaudeStorage){
+    const key = STORAGE_KEY_PREFIX + entry.id;
+    await window.storage.set(key, JSON.stringify(entry), false);
+  } else {
+    const list = loadLocal();
+    list.push(entry);
+    saveLocal(list);
+  }
+}
+
+async function deleteEntry(id){
+  if(hasClaudeStorage){
+    const key = STORAGE_KEY_PREFIX + id;
+    try{ await window.storage.delete(key, false); }catch(e){}
+  } else {
+    saveLocal(loadLocal().filter(e=>e.id!==id));
+  }
+  entries = entries.filter(e=>e.id!==id);
+  render();
+}
+
+function computeTotals(){
+  let income=0, expense=0, net=0, save=0;
+  entries.forEach(e=>{
+    income += e.income;
+    const exp = e.fuel+e.maint+e.phone+e.other;
+    expense += exp;
+    const n = e.income - exp;
+    net += n;
+    save += n * (e.pct/100);
+  });
+  document.getElementById('totalIncome').textContent = fmt(income);
+  document.getElementById('totalExpense').textContent = fmt(expense);
+  document.getElementById('totalNet').textContent = fmt(net) + ' جنيه';
+  document.getElementById('totalSave').textContent = fmt(save) + ' جنيه';
+}
+
+function render(){
+  computeTotals();
+  const listEl = document.getElementById('entriesList');
+  if(entries.length===0){
+    listEl.innerHTML = '<div class="empty">لسه معملتش أي يوم. ابدأ بإضافة أول يوم شغل فوق 👆</div>';
+    return;
+  }
+  listEl.innerHTML = entries.map(e=>{
+    const exp = e.fuel+e.maint+e.phone+e.other;
+    const net = e.income - exp;
+    const save = net * (e.pct/100);
+    return `
+      <div class="entry-card">
+        <div class="info">
+          <div class="date">${e.date} · ${e.app}</div>
+          <div class="meta">${e.orders} طلب · ${e.hours} ساعة · مصاريف ${fmt(exp)}</div>
+        </div>
+        <div class="amounts">
+          <div class="net">${fmt(net)} جنيه</div>
+          <div class="save">توفير ${fmt(save)}</div>
+        </div>
+        <button class="del-btn" onclick="deleteEntry('${e.id}')">✕</button>
+      </div>
+    `;
+  }).join('');
+}
+
+document.getElementById('saveBtn').addEventListener('click', async ()=>{
+  const date = document.getElementById('f_date').value || todayStr();
+  const app = document.getElementById('f_app').value;
+  const hours = parseFloat(document.getElementById('f_hours').value)||0;
+  const orders = parseFloat(document.getElementById('f_orders').value)||0;
+  const income = parseFloat(document.getElementById('f_income').value)||0;
+  const fuel = parseFloat(document.getElementById('f_fuel').value)||0;
+  const maint = parseFloat(document.getElementById('f_maint').value)||0;
+  const phone = parseFloat(document.getElementById('f_phone').value)||0;
+  const other = parseFloat(document.getElementById('f_other').value)||0;
+  const pct = parseFloat(document.getElementById('f_pct').value)||10;
+
+  const entry = {
+    id: Date.now().toString(),
+    date, app, hours, orders, income, fuel, maint, phone, other, pct
+  };
+
+  try{
+    await saveEntry(entry);
+    entries.unshift(entry);
+    entries.sort((a,b)=> b.date.localeCompare(a.date));
+    render();
+    showToast('تم الحفظ ✓');
+    ['f_hours','f_orders','f_income','f_fuel','f_maint','f_phone','f_other'].forEach(id=>{
+      document.getElementById(id).value='';
+    });
+  }catch(e){
+    showToast('حصل خطأ، جرب تاني');
+  }
+});
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=> t.classList.remove('show'), 1800);
+}
+
+loadEntries();
+</script>
+</body>
+</html>
